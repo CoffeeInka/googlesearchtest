@@ -1,11 +1,11 @@
 package com.google;
 
-import org.junit.After;
-import org.junit.Before;
+import com.codeborne.selenide.*;
+import com.google.pages.HomePage;
+import com.google.pages.ResultPage;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static com.codeborne.selenide.Selenide.close;
-import static com.codeborne.selenide.Selenide.open;
 import static org.junit.Assert.*;
 
 
@@ -14,21 +14,20 @@ import static org.junit.Assert.*;
  */
 public class GoogleSearchTest {
 
-    @Before
-    public void setUp(){
-    open("http://google.com");
+    @BeforeClass
+    public static void setup(){
+        Configuration.browser = System.getProperty("driver.browser");
     }
 
-    @After
-    public void tearDown() {
-        close();
-    }
-
+    HomePage home = new HomePage();
 
     @Test
     public void searchTest(){
-        HomePage home = new HomePage();
+        home.initialize();
         ResultPage result = home.search("Selenium automates browsers");
-        assertTrue(result.getFirstLink() .contains("Selenium automates browsers");
+        result.assertResultsAmount(10);
+        assertTrue(result.getFirstLink().contains("Selenium automates browsers"));
     }
+
+
 }
