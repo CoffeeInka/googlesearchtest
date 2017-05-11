@@ -5,6 +5,8 @@ import com.google.pages.HomePage;
 import com.google.pages.ResultPage;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import static com.codeborne.selenide.WebDriverRunner.*;
+
 
 import static org.junit.Assert.*;
 
@@ -27,7 +29,7 @@ public class GoogleSearchTest {
         ResultPage result = home.search("Selenium automates browsers");
         result.assertResultsAmount(10);
         assertTrue(result.getFirstLink().contains("Selenium automates browsers"));
+        result.enterFirstLink();
+        assertTrue(url().equals("www.seleniumhq.org"));
     }
-
-
 }

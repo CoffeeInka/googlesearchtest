@@ -20,4 +20,8 @@ public class ResultPage {
     public void assertResultsAmount(int i) {
         results.shouldHave(size(i));
     }
+
+    public void enterFirstLink() {
+        $(".r>a").pressEnter();
+    }
 }
