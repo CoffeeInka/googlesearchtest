@@ -1,10 +1,16 @@
 package com.google;
 
 import com.codeborne.selenide.*;
-import com.google.pages.HomePage;
-import com.google.pages.ResultPage;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.openqa.selenium.By;
+
+import static com.codeborne.selenide.CollectionCondition.size;
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.WebDriverRunner.*;
 
 
@@ -17,19 +23,31 @@ import static org.junit.Assert.*;
 public class GoogleSearchTest {
 
     @BeforeClass
-    public static void setup(){
+    public static void setup() {
         Configuration.browser = System.getProperty("driver.browser");
     }
 
-    HomePage home = new HomePage();
 
     @Test
-    public void searchTest(){
-        home.initialize();
-        ResultPage result = home.search("Selenium automates browsers");
-        result.assertResultsAmount(10);
-        assertTrue(result.getFirstLink().contains("Selenium automates browsers"));
-        result.enterFirstLink();
-        assertTrue(url().equals("www.seleniumhq.org"));
+    public void googleSearchAcceptanceTest() {
+        open("http://www.google.com");
+        search("Selenium automates browsers");
+        assertResultsAmount(10);
+        results.first().shouldHave(text("Selenium automates browsers"));
+        results.first().find(By.linkText("Selenium - Web Browser Automation")).click();
+        selenidePageHeader.shouldBe(visible);
+        assertEquals(url(), "http://www.seleniumhq.org/");
+    }
+
+    private void search(String query) {
+        $("#lst-ib").setValue(query).pressEnter();
+    }
+
+    public ElementsCollection results = $$(".g");
+
+    public SelenideElement selenidePageHeader = $("#mainContent>h2");
+
+    public void assertResultsAmount(int resultsAmount) {
+        results.shouldHave(size(resultsAmount));
     }
 }
