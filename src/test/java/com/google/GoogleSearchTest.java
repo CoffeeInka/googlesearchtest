@@ -24,18 +24,18 @@ public class GoogleSearchTest {
 
     @BeforeClass
     public static void setup() {
-        Configuration.browser = System.getProperty("driver.browser");
+        Configuration.browser = "firefox";
     }
 
 
     @Test
-    public void googleSearchAcceptanceTest() {
+    public void testSearchThenFollowLink() {
         open("http://www.google.com");
         search("Selenium automates browsers");
         assertResultsAmount(10);
         results.first().shouldHave(text("Selenium automates browsers"));
-        results.first().find(By.linkText("Selenium - Web Browser Automation")).click();
-        selenidePageHeader.shouldBe(visible);
+        results.first().$("a").click();
+        $$("#mainContent>h2").first().shouldBe(visible);
         assertEquals(url(), "http://www.seleniumhq.org/");
     }
 
@@ -43,9 +43,7 @@ public class GoogleSearchTest {
         $("#lst-ib").setValue(query).pressEnter();
     }
 
-    public ElementsCollection results = $$(".g");
-
-    public SelenideElement selenidePageHeader = $("#mainContent>h2");
+    public ElementsCollection results = $$(".srg > .g");
 
     public void assertResultsAmount(int resultsAmount) {
         results.shouldHave(size(resultsAmount));
