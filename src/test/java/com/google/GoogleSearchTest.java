@@ -31,19 +31,25 @@ public class GoogleSearchTest {
     @Test
     public void testSearchThenFollowLink() {
         open("http://www.google.com");
+
         search("Selenium automates browsers");
         assertResultsAmount(10);
         results.first().shouldHave(text("Selenium automates browsers"));
-        results.first().$("a").click();
+
+        followLink(0);
         $$("#mainContent>h2").first().shouldBe(visible);
         assertEquals(url(), "http://www.seleniumhq.org/");
     }
 
     private void search(String query) {
-        $("#lst-ib").setValue(query).pressEnter();
+        $("[name='q']").setValue(query).pressEnter();
     }
 
-    public ElementsCollection results = $$(".srg > .g");
+    public void followLink(int index) {
+        $$(".srg>.g .rc .r>a").get(index).click();
+    }
+
+    public ElementsCollection results = $$(".srg >.g");
 
     public void assertResultsAmount(int resultsAmount) {
         results.shouldHave(size(resultsAmount));

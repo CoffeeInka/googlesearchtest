@@ -11,7 +11,6 @@
     <properties>
         <aspectj.version>1.8.9</aspectj.version>
         <compiler.version>1.8</compiler.version>
-        <driver.browser>firefox</driver.browser>
     </properties>
 
     <dependencies>
@@ -46,9 +45,6 @@
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
-                    <systemPropertyVariables>
-                        <webdriver.chrome.driver>/Applications/chromedriver</webdriver.chrome.driver>
-                    </systemPropertyVariables>
                 </configuration>
             </plugin>
         </plugins>
