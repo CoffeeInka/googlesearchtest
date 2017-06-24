@@ -1,7 +1,6 @@
 package com.google;
 
 import com.codeborne.selenide.*;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
@@ -22,11 +21,6 @@ import static org.junit.Assert.*;
  */
 public class GoogleSearchTest {
 
-    @BeforeClass
-    public static void setup() {
-        Configuration.browser = "firefox";
-    }
-
 
     @Test
     public void testSearchThenFollowLink() {
@@ -37,19 +31,19 @@ public class GoogleSearchTest {
         results.first().shouldHave(text("Selenium automates browsers"));
 
         followLink(0);
-        $$("#mainContent>h2").first().shouldBe(visible);
+        $("#mainContent>h2").shouldBe(visible);
         assertEquals(url(), "http://www.seleniumhq.org/");
     }
 
     private void search(String query) {
-        $("[name='q']").setValue(query).pressEnter();
+        $(By.name("q")).setValue(query).pressEnter();
     }
 
     public void followLink(int index) {
-        $$(".srg>.g .rc .r>a").get(index).click();
+        results.get(index).find(" .r>a").click();
     }
 
-    public ElementsCollection results = $$(".srg >.g");
+    public ElementsCollection results = $$(".srg>.g");
 
     public void assertResultsAmount(int resultsAmount) {
         results.shouldHave(size(resultsAmount));
