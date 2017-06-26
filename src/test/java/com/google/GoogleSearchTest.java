@@ -40,7 +40,7 @@ public class GoogleSearchTest {
     }
 
     public void followLink(int index) {
-        results.get(index).find(" .r>a").click();
+        results.get(index).find(".r>a").click();
     }
 
     public ElementsCollection results = $$(".srg>.g");
